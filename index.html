@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة مراجعة 发展汉语 中级综合(I)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #06b6d4;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--text-muted);
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-btn.exam-btn {
+            background: #fff7ed;
+            color: var(--warning);
+            border-color: var(--warning);
+            margin-inline-start: auto;
+        }
+
+        .tab-btn.exam-btn.active {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* Lesson Content Sections */
+        .lesson-content {
+            display: none;
+        }
+
+        .lesson-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grammar-item {
+            border-right: 4px solid var(--primary);
+            padding-right: 1rem;
+            margin-bottom: 1.5rem;
+            background: #fdfdfd;
+        }
+
+        .grammar-item h3 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .formula {
+            display: inline-block;
+            background: #eef2ff;
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin: 0.4rem 0;
+            direction: ltr;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            border: 1px solid #edf2f7;
+        }
+
+        .zh-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .audio-icon {
+            cursor: pointer;
+            color: var(--secondary);
+            font-size: 1rem;
+            transition: transform 0.1s;
+        }
+
+        .audio-icon:hover {
+            transform: scale(1.15);
+        }
+
+        .ar-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Interactive Drill Styles */
+        .question-box {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .q-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .opt-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .opt-btn:hover {
+            border-color: var(--primary);
+            background: #eef2ff;
+        }
+
+        .opt-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .opt-btn.correct {
+            background: #d1fae5 !important;
+            color: #065f46 !important;
+            border-color: var(--success) !important;
+        }
+
+        .opt-btn.wrong {
+            background: #fee2e2 !important;
+            color: #991b1b !important;
+            border-color: var(--danger) !important;
+        }
+
+        /* Word Order Drag/Click Area */
+        .order-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 48px;
+            padding: 0.5rem;
+            background: var(--bg);
+            border-radius: 8px;
+            border: 2px dashed var(--border);
+            margin-bottom: 0.5rem;
+            align-items: center;
+        }
+
+        .word-chip {
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .word-chip.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* Score Banner */
+        .score-banner {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .score-banner h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>发展汉语 中级综合(I) • منصة المذاكرة التفاعلية</h1>
+        <p>الدروس 1 إلى 5: شرح القواعد، نماذج السبورة، وتوليد الاختبارات الشاملة</p>
+    </header>
+
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('lesson1')">الدرس 1</button>
+            <button class="tab-btn" onclick="switchTab('lesson2')">الدرس 2</button>
+            <button class="tab-btn" onclick="switchTab('lesson3')">الدرس 3</button>
+            <button class="tab-btn" onclick="switchTab('lesson4')">الدرس 4</button>
+            <button class="tab-btn" onclick="switchTab('lesson5')">الدرس 5</button>
+            <button class="tab-btn exam-btn" onclick="switchTab('exam')">📝 الاختبار الشامل</button>
+        </div>
+
+        <!-- ================= الدرس 1 ================= -->
+        <div id="lesson1" class="lesson-content active">
+            <div class="card">
+                <h2>📖 الدرس 1: 你咋不早说？ (لماذا لم تقل ذلك مبكراً؟)</h2>
+                
+                <div class="grammar-item">
+                    <h3>1. الكلمات الرباعية المتضادة (远近闻名类四字词语)</h3>
+                    <div class="formula">[متضادان أحاديان] + فعل/صفة</div>
+                    <p>كلمتان متضادتان في المعنى تعقبهما صفة أو فعل لإعطاء معنى البلاغة والشمول (مثل: 远 بعيد / 近 قريب = القريب والبعيد يعرفه أي مشهور في كل مكان).</p>
+                    <div class="example-box">
+                        <div class="zh-text">我到附近一家远近闻名的牛肉面馆。 <span class="audio-icon" onclick="speak('我到附近一家远近闻名的牛肉面馆')">🔊</span></div>
+                        <div class="ar-text">ذهبت إلى مطعم نودلز لحم بقري ذائع الصيت في الجوار.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>2. التشبيه والمماثلة ((好)像……似的)</h3>
+                    <div class="formula">(好)像 + المشبه به + 似的</div>
+                    <p>تفيد التشبيه أو بيان تشابه الحالة تماماً (بمعنى: كأنه... / تماماً مثل...).</p>
+                    <div class="example-box">
+                        <div class="zh-text">好像是在创作自己的艺术品似的。 <span class="audio-icon" onclick="speak('好像是在创作自己的艺术品似的')">🔊</span></div>
+                        <div class="ar-text">كأنه كان يبدع تحفته الفنية الخاصة.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>3. التهوين والتقليل (不过……罢了)</h3>
+                    <div class="formula">不过 + الأمر الهين + (罢了)</div>
+                    <p>تساوي 只是 أو 仅仅 (مجرد... ليس إلا)، وتستخدم لتهوين الأمر وتصغير حجمه.</p>
+                    <div class="example-box">
+                        <div class="zh-text">没关系，不过是带回去给孩子吃罢了。 <span class="audio-icon" onclick="speak('没关系，不过是带回去给孩子吃罢了')">🔊</span></div>
+                        <div class="ar-text">لا بأس، إنها مجرد وجبة سآخذها لأطفالي فحسب.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>4. زوال العجب بمعرفة العلة (难怪)</h3>
+                    <div class="formula">难怪 + النتيجة المنطقية</div>
+                    <p>تعني (لا عجب / لا غرو)، وتستخدم عندما تكتشف السبب فيزول استغرابك (تساوي 怪不得).</p>
+                    <div class="example-box">
+                        <div class="zh-text">难怪你这么爱吃辣，原来你是四川人啊！ <span class="audio-icon" onclick="speak('难怪你这么爱吃辣，原来你是四川人啊')">🔊</span></div>
+                        <div class="ar-text">لا عجب أنك تحب الأكل الحار هكذا، اتضح أنك من سيتشوان!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= الدرس 2 ================= -->
+        <div id="lesson2" class="lesson-content">
+            <div class="card">
+                <h2>📖 الدرس 2: 和时间赛跑 (سباق مع الزمن)</h2>
+
+                <div class="grammar-item">
+                    <h3>1. المفاضلة والاختيار (与其 A，不如 B)</h3>
+                    <div class="formula">与其 + [الخيار المرفوض A] ，不如 + [الخيار المفضل B]</div>
+                    <p>تدل على تفضيل الخيار B على الخيار A بعد المقارنة (بدلاً من أن... الأفضل أن...).</p>
+                    <div class="example-box">
+                        <div class="zh-text">与其欺骗我说外祖母睡着了，还不如对我说实话。 <span class="audio-icon" onclick="speak('与其欺骗我说外祖母睡着了，还不如对我说实话')">🔊</span></div>
+                        <div class="ar-text">بدلاً من خداعي بأن جدتي نائمة، كان الأولى مصارحتي بالحقيقة.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>2. وتيرة الوقت (时间/日子 + 过得 + ظرف + 快/慢)</h3>
+                    <p>قالب لوصف الشعور النفسي بمرور الوقت سرعةً أو بطئاً، ويقترن بـ 飞快 و 转眼间.</p>
+                    <div class="example-box">
+                        <div class="zh-text">时间过得飞快，转眼天就黑了。 <span class="audio-icon" onclick="speak('时间过得飞快，转眼天就黑了')">🔊</span></div>
+                        <div class="ar-text">مر الوقت سريعاً كالبرق، وفي لمح البصر حل الظلام.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>3. الفعل السببي (使)</h3>
+                    <div class="formula">A (السبب) + 使 + B (المتأثر) + C (النتيجة)</div>
+                    <p>فعل سببي رسمي يفيد التصيير والتسبيب (يجعل...)، ويقابله في الكلام اليومي 让.</p>
+                    <div class="example-box">
+                        <div class="zh-text">时间过得飞快，使我的小心眼里不只是着急，还有悲伤。 <span class="audio-icon" onclick="speak('时间过得飞快，使我的小心眼里不只是着急，还有悲伤')">🔊</span></div>
+                        <div class="ar-text">سرعة مرور الوقت جعلت قلبي الصغير يمتلئ بالحزن إلى جانب القلق.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>4. مكمل إمكانية التفوق (V + 得/不 + 过)</h3>
+                    <p>تدل على القدرة على التغلب أو التفوق على الطرف الآخر في المنافسة (跑不过 = لا يسبقه).</p>
+                    <div class="example-box">
+                        <div class="zh-text">虽然我知道人永远跑不过时间。 <span class="audio-icon" onclick="speak('虽然我知道人永远跑不过时间')">🔊</span></div>
+                        <div class="ar-text">مع أنني أعلم أن الإنسان لا يمكنه أن يسبق الزمن.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= الدرس 3 ================= -->
+        <div id="lesson3" class="lesson-content">
+            <div class="card">
+                <h2>📖 الدرس 3: 租房那些事 (حكايات استئجار البيوت)</h2>
+
+                <div class="grammar-item">
+                    <h3>1. تحديد المنظور (对……来说)</h3>
+                    <p>تعني (بالنسبة لـ...) من وجهة نظر شخص معين أو من زاوية محددة.</p>
+                    <div class="example-box">
+                        <div class="zh-text">对我们来说，这套房子的条件是再合适不过了。 <span class="audio-icon" onclick="speak('对我们来说，这套房子的条件是再合适不过了')">🔊</span></div>
+                        <div class="ar-text">بالنسبة لنا، شروط هذه الشقة أنسب ما يكون على الإطلاق.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>2. التفضيل المطلق (再 + Adj/V + 不过了)</h3>
+                    <p>صيغة مبالغة تفيد الوصول لأقصى درجات الصفة (تساوي 最 ولا يوجد أفضل منها).</p>
+                    <div class="example-box">
+                        <div class="zh-text">能成为志愿者，我真是再高兴不过了！ <span class="audio-icon" onclick="speak('能成为志愿者，我真是再高兴不过了')">🔊</span></div>
+                        <div class="ar-text">أن أصبح متطوعاً، هذا يسعدني إلى أقصى حد!</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>3. الشرط التنازلي (就算……，也/还……)</h3>
+                    <p>تساوي 即使……也…… (حتى لو... فإن النتيجة لن تتغير).</p>
+                    <div class="example-box">
+                        <div class="zh-text">就算是这样的房子，房租也还在涨呢。 <span class="audio-icon" onclick="speak('就算是这样的房子，房租也还在涨呢')">🔊</span></div>
+                        <div class="ar-text">حتى لو كانت شقة كهذه، فإن إيجارها لا يزال يرتفع.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>4. ندرة وقوع الفعل (没怎么 V 过)</h3>
+                    <p>تفيد أن الفعل لم يمارس أو يحدث إلا نادراً جداً.</p>
+                    <div class="example-box">
+                        <div class="zh-text">是新房，还没怎么住过。 <span class="audio-icon" onclick="speak('是新房，还没怎么住过')">🔊</span></div>
+                        <div class="ar-text">إنها شقة جديدة، لم يُسكن فيها تقريباً.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>5. النتيجة العكسية للمتوقع (反倒)</h3>
+                    <p>ظرف يعني (على العكس من ذلك / بل على النقيض)، لمخالفة المنطق الطبيعي.</p>
+                    <div class="example-box">
+                        <div class="zh-text">风不但没停，反倒更大了。 <span class="audio-icon" onclick="speak('风不但没停，反倒更大了')">🔊</span></div>
+                        <div class="ar-text">الرياح لم تتوقف، بل على العكس اشتدت أكثر.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= الدرس 4 ================= -->
+        <div id="lesson4" class="lesson-content">
+            <div class="card">
+                <h2>📖 الدرس 4: 老舍小时候的故事 (طفولة الأديب لاو شه)</h2>
+
+                <div class="grammar-item">
+                    <h3>1. الحتمية والدلالة (意味着)</h3>
+                    <p>فعل يعني (يعني أن... / مؤداه...) لبيان النتيجة الحتمية لحدث ما.</p>
+                    <div class="example-box">
+                        <div class="zh-text">这就意味着，他们全家都要挨饿。 <span class="audio-icon" onclick="speak('这就意味着，他们全家都要挨饿')">🔊</span></div>
+                        <div class="ar-text">وهذا يعني أن جميع أفراد الأسرة سيعانون من الجوع.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>2. عقد المقارنة وإصدار النتيجة (比起来)</h3>
+                    <p>تستخدم بعد طرفي المقارنة (两者比起来...) أو (跟……比起来...).</p>
+                    <div class="example-box">
+                        <div class="zh-text">虽然挨饿不好受，但两者比起来，当然还是一阵子比较好熬。 <span class="audio-icon" onclick="speak('虽然挨饿不好受，但两者比起来，当然还是一阵子比较好熬')">🔊</span></div>
+                        <div class="ar-text">رغم مرارة الجوع، لكن بالمقارنة، تحمله لفترة وجيزة أهون بكثير.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>3. حذف وإيجاز أدوات الوصل (省略关联词语)</h3>
+                    <p>حذف أدوات مثل 即使 أو 就算 في الكلام الشفوي للاختصار (مثل: 我不说你也知道).</p>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>4. توكيد النفي القاطع (并 + 不/没有)</h3>
+                    <p>توضع 并 قبل النفي لتوكيده ودحض أي اعتقاد خاطئ مسبق (في الواقع ليس...).</p>
+                    <div class="example-box">
+                        <div class="zh-text">母亲并不识字，她给我的是生命的教育。 <span class="audio-icon" onclick="speak('母亲并不识字，她给我的是生命的教育')">🔊</span></div>
+                        <div class="ar-text">أمي في الواقع لم تكن تعرف القراءة والكتابة، لكنها منحتني درس الحياة.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>5. الاستمرار المفضي لحال جديد (V着V着)</h3>
+                    <p>تكرار الفعل الأحادي مع 着 يدل على استمرار الفعل حتى يطرأ سلوك جديد.</p>
+                    <div class="example-box">
+                        <div class="zh-text">走着走着，他想：我把鞋也脱下来…… <span class="audio-icon" onclick="speak('走着走着，他想：我把鞋也脱下来')">🔊</span></div>
+                        <div class="ar-text">وبينما كان يمشي ويمشي، خطرت بباله فكرة: لو خلعت حذائي أيضاً...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= الدرس 5 ================= -->
+        <div id="lesson5" class="lesson-content">
+            <div class="card">
+                <h2>📖 الدرس 5: 我在中国学“规矩” (تعلم القواعد والأصول)</h2>
+
+                <div class="grammar-item">
+                    <h3>1. التلازم بالنفي المزدوج (没有/不 A……不/没有 B)</h3>
+                    <p>صيغة توضح حتمية الشرط A لتحقق B (بدون A يستحيل B).</p>
+                    <div class="example-box">
+                        <div class="zh-text">没有规矩，不成方圆。 <span class="audio-icon" onclick="speak('没有规矩，不成方圆')">🔊</span></div>
+                        <div class="ar-text">بلا فرجار ومسطرة لا يُرسم مربع ولا دائرة (بلا قواعد لا تستقيم الأمور).</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>2. التتابع التفصيلي (一一)</h3>
+                    <p>ظرف يسبق الفعل بمعنى واحداً تلو الآخر / بالتفصيل.</p>
+                    <div class="example-box">
+                        <div class="zh-text">对以上规矩，老师一一进行了解释。 <span class="audio-icon" onclick="speak('对以上规矩，老师一一进行了解释')">🔊</span></div>
+                        <div class="ar-text">قام الأستاذ بشرح تلك القواعد نقطة بنقطة بالتفصيل.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>3. شدة الدهشة (居然)</h3>
+                    <p>ظرف يدل على المفاجأة والتعجب من أمر لم يكن في الحسبان (للمفاجأة / يا للعجب).</p>
+                    <div class="example-box">
+                        <div class="zh-text">我们班居然没有一个人迟到、旷课。 <span class="audio-icon" onclick="speak('我们班居然没有一个人迟到旷课')">🔊</span></div>
+                        <div class="ar-text">للمفاجأة، لم يتأخر أو يغب في فصلنا شخص واحد.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>4. السببية والنتيجة (因(为)……而……)</h3>
+                    <p>توضح أن السبب (بعد 因为) ترتبت عليه النتيجة المباشرة (بعد 而).</p>
+                    <div class="example-box">
+                        <div class="zh-text">没有人因为违反规矩而被取消考试资格。 <span class="audio-icon" onclick="speak('没有人因为违反规矩而被取消考试资格')">🔊</span></div>
+                        <div class="ar-text">لم يُحرم أحد من دخول الامتحان بسبب خرق القواعد.</div>
+                    </div>
+                </div>
+
+                <div class="grammar-item">
+                    <h3>5. الترجيح والاستنتاج (看来)</h3>
+                    <p>تفيد الاستنتاج المنطقي بناءً على القرائن والمعطيات (يبدو أن...).</p>
+                    <div class="example-box">
+                        <div class="zh-text">看来，还真是得入乡随俗呀。 <span class="audio-icon" onclick="speak('看来还真是得入乡随俗呀')">🔊</span></div>
+                        <div class="ar-text">على ما يبدو، لا بد للمرء من أن يساير عادات القوم الذين يحل بينهم.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= قسم الاختبار الشامل التفاعلي ================= -->
+        <div id="exam" class="lesson-content">
+            <div id="scoreBanner" class="score-banner">
+                <h3 id="scoreValue">0 / 100</h3>
+                <p id="scoreMsg">أحسنت! واصل التدريب لتحقيق الدرجة الكاملة.</p>
+            </div>
+
+            <div class="card">
+                <h2>📝 محاكي الاختبار الفعلي (مطابق لصور السبورة)</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">يتم توليد الأسئلة عشوائياً من بنك الأسئلة المعتمد للدروس 1 إلى 5.</p>
+                
+                <div id="examContainer"></div>
+
+                <div class="action-btns">
+                    <button class="btn btn-primary" onclick="gradeExam()">تصحيح الاختبار واحتساب الدرجة</button>
+                    <button class="btn btn-secondary" onclick="revealAnswers()">إظهار الحل النموذجي</button>
+                    <button class="btn btn-secondary" onclick="generateRandomExam()">توليد اختبار عشوائي جديد 🔀</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Speech Synthesis
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'zh-CN';
+                utter.rate = 0.85;
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lesson-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            if (tabId === 'exam' && !examGenerated) {
+                generateRandomExam();
+            }
+        }
+
+        // Exam Question Bank
+        const questionBank = {
+            radicals: [
+                { rad: "扌", comp: "奂", ans: "换", word: "换钱", arabic: "يبدل" },
+                { rad: "扌", comp: "丁", ans: "打", word: "打电话", arabic: "يضرب/يتصل" },
+                { rad: "扌", comp: "巴", ans: "把", word: "把握", arabic: "يمسك" },
+                { rad: "讠", comp: "兑", ans: "说", word: "说话", arabic: "يتحدث" },
+                { rad: "讠", comp: "平", ans: "评", word: "批评", arabic: "ينتقد" },
+                { rad: "宀", comp: "子", ans: "字", word: "汉字", arabic: "رمز/حرف" },
+                { rad: "宀", comp: "元", ans: "完", word: "完成", arabic: "يكتمل" },
+                { rad: "女", comp: "昏", ans: "婚", word: "结婚", arabic: "زواج" },
+                { rad: "忄", comp: "董", ans: "懂", word: "听懂", arabic: "يفهم" },
+                { rad: "忄", comp: "曼", ans: "慢", word: "慢慢", arabic: "بطيء" }
+            ],
+            blanks: [
+                { q: "这部电影很感人，很多人在观看时都______流下了眼泪。", opts: ["拥挤", "丝毫", "制作", "不知不觉"], ans: "不知不觉", hint: "بشكل غير واعٍ" },
+                { q: "如果早上坐地铁，你会发现有很多人，地铁里特别______。", opts: ["拥挤", "丝毫", "严厉", "不知不觉"], ans: "拥挤", hint: "مزدحم" },
+                { q: "困难面前，他们的决心没有______改变。", opts: ["拥挤", "丝毫", "严厉", "制作"], ans: "丝毫", hint: "أدنى ذرة" },
+                { q: "虽然老师______地批评了你，但其实她还是很关心你的。", opts: ["制作", "熟练", "严厉", "顿时"], ans: "严厉", hint: "بصرامة" },
+                { q: "好的方法远远______很多无用的努力。", opts: ["安慰", "胜过", "形容", "用途"], ans: "胜过", hint: "يتفوق على" },
+                { q: "只要坚持下去，最后的胜利一定______我们！", opts: ["属于", "接受", "推荐", "梦想"], ans: "属于", hint: "ينتمي إلى" },
+                { q: "在______的日子里，他们仍旧坚持着自己的理想。", opts: ["多余", "艰苦", "操心", "富裕"], ans: "艰苦", hint: "شاق" },
+                { q: "请走人行横道，不要______交通规则。", opts: ["放松", "允许", "违反", "即将"], ans: "违反", hint: "يخالف" }
+            ],
+            transforms: [
+                {
+                    type: "完成句子",
+                    prompt: "A: 这两位演员长得太像啦！\nB: 是啊，______。(好像……似的)",
+                    opts: ["他们俩好像双胞胎似的", "他们俩不过是双胞胎罢了", "他们俩难怪是双胞胎"],
+                    ans: "他们俩好像双胞胎似的"
+                },
+                {
+                    type: "改写句子",
+                    prompt: "我就是和你开个玩笑，你怎么还真生气了？ (不过……罢了)",
+                    opts: ["我不过是和你开个玩笑罢了，你怎么还真生气了？", "我好像和你开个玩笑罢了，你怎么还真生气了？"],
+                    ans: "我不过是和你开个玩笑罢了，你怎么还真生气了？"
+                },
+                {
+                    type: "改写句子",
+                    prompt: "由他来完成这项工作最合适了。(再+Adj+不过了)",
+                    opts: ["由他来完成这项工作再合适不过了。", "对这项工作来说他最合适不过了。"],
+                    ans: "由他来完成这项工作再合适不过了。"
+                },
+                {
+                    type: "完成句子",
+                    prompt: "A: 她情绪好些了吗？还哭吗？\nB: ______，估计是太累了。(V着V着)",
+                    opts: ["她哭着哭着就睡着了", "她没怎么哭过就睡着了"],
+                    ans: "她哭着哭着就睡着了"
+                },
+                {
+                    type: "改写句子",
+                    prompt: "这套房子是不错，可是太大了，对咱们真的不合适。(并不)",
+                    opts: ["这套房子是不错，可是太大了，对咱们并不合适。", "这套房子并不大，对咱们真的不合适。"],
+                    ans: "这套房子是不错，可是太大了，对咱们并不合适。"
+                }
+            ],
+            orders: [
+                { words: ["赶上", "午餐", "正好", "时间"], ans: "正好赶上午餐时间", meaning: "صادف ذلك وقت الغداء تماماً." },
+                { words: ["挨饿", "你想", "一阵子", "还是", "一辈子"], ans: "你想挨饿一阵子还是一辈子", meaning: "أتريد أن تجوع لفترة أم مدى الحياة؟" },
+                { words: ["跑不过", "人", "时间", "我知道", "永远"], ans: "我知道人永远跑不过时间", meaning: "أعلم أن المرء لا يسبق الزمن." },
+                { words: ["迟到", "我们班", "旷课", "居然", "没有一个人"], ans: "我们班居然没有一个人迟到旷课", meaning: "للعجب لم يتأخر أو يغب أحد." }
+            ]
+        };
+
+        let currentExam = { radicals: [], blanks: [], transforms: [], orders: [] };
+        let examGenerated = false;
+
+        function getRandomItems(arr, count) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function generateRandomExam() {
+            examGenerated = true;
+            document.getElementById('scoreBanner').style.display = 'none';
+
+            currentExam.radicals = getRandomItems(questionBank.radicals, 4);
+            currentExam.blanks = getRandomItems(questionBank.blanks, 5);
+            currentExam.transforms = getRandomItems(questionBank.transforms, 4);
+            currentExam.orders = getRandomItems(questionBank.orders, 3);
+
+            renderExam();
+        }
+
+        function renderExam() {
+            const container = document.getElementById('examContainer');
+            container.innerHTML = '';
+
+            // Section 1: Radicals
+            let html = `<div class="q-header">一、写汉字并组词 (20 درجة)</div>`;
+            currentExam.radicals.forEach((r, idx) => {
+                html += `
+                    <div class="question-box" id="rad_${idx}">
+                        <div class="q-title">${idx + 1}. 偏旁: <strong>${r.rad}</strong> + <strong>${r.comp}</strong> ➔ ؟ (كلمة: ${r.word})</div>
+                        <div class="options-grid">
+                            ${[r.ans, '接', '打', '慢'].sort().map(c => `
+                                <button class="opt-btn" onclick="selectOpt(this, 'rad_${idx}', '${c}')">${c}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Section 2: Fill blanks
+            html += `<div class="q-header" style="margin-top: 1.5rem;">二、选词填空 (30 درجة)</div>`;
+            currentExam.blanks.forEach((b, idx) => {
+                html += `
+                    <div class="question-box" id="blank_${idx}">
+                        <div class="q-title">${idx + 1}. ${b.q} <span style="font-size:0.85rem;color:var(--text-muted)">(${b.hint})</span></div>
+                        <div class="options-grid">
+                            ${b.opts.map(o => `
+                                <button class="opt-btn" onclick="selectOpt(this, 'blank_${idx}', '${o}')">${o}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Section 3: Sentence transforms
+            html += `<div class="q-header" style="margin-top: 1.5rem;">三/四、完成与改写句子 (30 درجة)</div>`;
+            currentExam.transforms.forEach((t, idx) => {
+                html += `
+                    <div class="question-box" id="trans_${idx}">
+                        <div class="q-header" style="color:var(--warning)">${t.type}</div>
+                        <div class="q-title" style="white-space:pre-line;">${idx + 1}. ${t.prompt}</div>
+                        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                            ${t.opts.map(o => `
+                                <button class="opt-btn" style="text-align:right;" onclick="selectOpt(this, 'trans_${idx}', '${o}')">${o}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Section 4: Word order
+            html += `<div class="q-header" style="margin-top: 1.5rem;">五、组句子 (20 درجة)</div>`;
+            currentExam.orders.forEach((o, idx) => {
+                html += `
+                    <div class="question-box" id="order_${idx}">
+                        <div class="q-title">${idx + 1}. ${o.meaning}</div>
+                        <div class="order-area" id="order_area_${idx}"></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                            ${o.words.map(w => `
+                                <span class="word-chip" onclick="handleWordClick(this, '${w}', ${idx})">${w}</span>
+                            `).join('')}
+                            <button class="btn btn-secondary" style="padding:0.2rem 0.6rem;font-size:0.8rem;" onclick="resetOrder(${idx})">إعادة</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectOpt(btn, group, val) {
+            const parent = document.getElementById(group);
+            parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            parent.dataset.selected = val;
+        }
+
+        function handleWordClick(chip, word, qIdx) {
+            if (chip.classList.contains('used')) return;
+            chip.classList.add('used');
+            const area = document.getElementById(`order_area_${qIdx}`);
+            const span = document.createElement('span');
+            span.className = 'word-chip';
+            span.textContent = word;
+            area.appendChild(span);
+        }
+
+        function resetOrder(qIdx) {
+            document.getElementById(`order_area_${qIdx}`).innerHTML = '';
+            document.getElementById(`order_${qIdx}`).querySelectorAll('.word-chip').forEach(c => c.classList.remove('used'));
+        }
+
+        function gradeExam() {
+            let score = 0;
+
+            // Grade Radicals (5 pts each)
+            currentExam.radicals.forEach((r, idx) => {
+                const box = document.getElementById(`rad_${idx}`);
+                const chosen = box.dataset.selected;
+                if (chosen === r.ans) score += 5;
+            });
+
+            // Grade Blanks (6 pts each)
+            currentExam.blanks.forEach((b, idx) => {
+                const box = document.getElementById(`blank_${idx}`);
+                const chosen = box.dataset.selected;
+                if (chosen === b.ans) score += 6;
+            });
+
+            // Grade Transforms (7.5 pts each)
+            currentExam.transforms.forEach((t, idx) => {
+                const box = document.getElementById(`trans_${idx}`);
+                const chosen = box.dataset.selected;
+                if (chosen === t.ans) score += 7.5;
+            });
+
+            // Grade Orders (6.6 pts each approx)
+            currentExam.orders.forEach((o, idx) => {
+                const area = document.getElementById(`order_area_${idx}`);
+                const built = Array.from(area.children).map(c => c.textContent).join('');
+                if (built === o.ans) score += 7;
+            });
+
+            score = Math.min(100, Math.round(score));
+            const banner = document.getElementById('scoreBanner');
+            document.getElementById('scoreValue').textContent = `${score} / 100`;
+            banner.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function revealAnswers() {
+            currentExam.radicals.forEach((r, idx) => {
+                const box = document.getElementById(`rad_${idx}`);
+                box.querySelectorAll('.opt-btn').forEach(b => {
+                    if (b.textContent === r.ans) b.classList.add('correct');
+                });
+            });
+
+            currentExam.blanks.forEach((b, idx) => {
+                const box = document.getElementById(`blank_${idx}`);
+                box.querySelectorAll('.opt-btn').forEach(bElem => {
+                    if (bElem.textContent === b.ans) bElem.classList.add('correct');
+                });
+            });
+
+            currentExam.transforms.forEach((t, idx) => {
+                const box = document.getElementById(`trans_${idx}`);
+                box.querySelectorAll('.opt-btn').forEach(bElem => {
+                    if (bElem.textContent === t.ans) bElem.classList.add('correct');
+                });
+            });
+
+            currentExam.orders.forEach((o, idx) => {
+                resetOrder(idx);
+                const area = document.getElementById(`order_area_${idx}`);
+                o.words.forEach(w => {
+                    const span = document.createElement('span');
+                    span.className = 'word-chip';
+                    span.style.borderColor = 'var(--success)';
+                    span.textContent = w;
+                    area.appendChild(span);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
